@@ -1,0 +1,58 @@
+/s 1 3 div def
+
+/kochside {
+    dup 0 gt {
+	% recursion call
+        dup 1 sub
+    	    s s scale
+            dup kochside
+	    90 rotate dup kochside
+	    -90 rotate dup kochside
+	    -90 rotate dup kochside
+	    90 rotate dup kochside
+            1 s div dup scale
+	pop
+    } {
+	% termination case
+	1 0 rlineto
+    } ifelse
+    pop
+} bind def
+
+% draw koch square
+/kochsquare {
+    0 0 moveto
+    dup kochside
+    1 0 translate
+    -90 rotate
+    dup kochside
+    1 0 translate
+    -90 rotate
+    dup kochside
+    1 0 translate
+    -90 rotate
+    dup kochside
+    1 0 translate
+    -90 rotate
+    pop
+} bind def
+
+/demo {
+    125 125 scale
+    0.01 setlinewidth
+    0.2 0.2 0.7 setrgbcolor
+
+    0.75 5.75 translate
+    0 kochsquare fill
+
+    2.25 0 translate
+    1 kochsquare fill
+
+    -2.25 -2.25 translate
+    2 kochsquare fill
+
+    2.25 0 translate
+    3 kochsquare fill
+} def
+
+demo
