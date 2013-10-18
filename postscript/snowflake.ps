@@ -1,0 +1,69 @@
+%!PS-Adobe-2.0
+%%BoundingBox: 45 245 555 755
+% Snowflake
+%
+% Author:       Julius Adorf
+% Created:      December 2009
+
+% ----- PARAMETERS -----
+
+/D 5 def
+
+% ----- PROCEDURES -----
+
+% 1/3
+/s
+    1 3 div
+def
+
+/snowflake {
+    % The line width shall be constant and independent of the recursion depth.
+    % Thus, the linewidth must be scaled accordingly.  It must be scaled in the
+    % same order in which the coordinate system is scaled during recursive
+    % descent. As the system always scales by 1/3, we need an exponential
+    % growth in linewidth
+    dup 3 exch exp 0.002 mul setlinewidth
+    %% toggle next line to create strange effects
+    % dup 3 exch exp setlinewidth
+
+    % This triggers the recursion by drawing the three
+    % sides of the triangle.
+    3 {
+        dup snowdivide
+        % move to the right end of the side
+        1 0 translate
+        % rotate by 120 degrees
+        120 rotate
+    } repeat
+    pop
+} bind def
+
+/snowdivide {
+    dup 0 gt {
+        gsave
+            s s scale
+            dup 1 sub snowdivide
+            gsave
+                2 0 translate
+                dup 1 sub snowdivide
+            grestore
+            1 0 translate
+            -60 rotate
+            0 0 moveto
+            dup 1 sub snowdivide
+            1 0 translate
+            120 rotate
+            dup 1 sub snowdivide
+        grestore
+    } {
+        0 0 moveto
+        1 0 rlineto
+        stroke
+    } ifelse
+    pop
+} def
+
+% ----- MAIN PROCEDURE -----
+100 400 translate
+350 350 scale
+5 snowflake
