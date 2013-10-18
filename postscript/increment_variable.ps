@@ -1,0 +1,12 @@
+% literal => -
+% increases variable value
+/++ { dup load 1 add def } def
+
+% demo
+/counter 0 def
+/counter ++
+/counter ++
+(counter is ) print
+counter ==
+flush
+
