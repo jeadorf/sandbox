@@ -1,0 +1,41 @@
+% Pie radius
+/Radius 200 def
+
+% array => -
+/drawpiechart {
+    {
+        pstack
+        dup xcheck {
+            exec
+        } {
+            360 mul dup
+            drawslice
+            rotate
+        } ifelse
+    } forall
+} def
+
+% percentage => -
+/drawslice {
+    0 0 moveto
+    0 0 Radius 0
+    5 -1 roll
+    arc
+    0 0 lineto
+    fill
+} def
+
+/demo {
+    300 500 translate
+    0.2 0.2 0.8 setrgbcolor
+
+    /setred   { 1 0 0 setrgbcolor } def
+    /setgreen { 0 1 0 setrgbcolor } def
+    /setblue  { 0 0 1 setrgbcolor } def
+    /setblack { 0 setgray } def
+
+    [ {setred} 0.40 {setblue} 0.35 {setgreen} 0.22 {setblack} 0.03 ]
+    drawpiechart
+} def
+
+demo
