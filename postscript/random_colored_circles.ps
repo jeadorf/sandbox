@@ -1,0 +1,28 @@
+% some circles
+
+425 450 translate
+
+gsave
+
+% draw a nice circle
+/drawcircle {
+    800 0 360 arc closepath
+    % rand 231.0 div rand 231.0 div rand 231.0 div setrgbcolor
+    rand 1000 mod 1000 div
+    rand 1000 mod 1000 div
+    rand 1000 mod 1000 div
+    setrgbcolor
+    stroke
+} def
+
+gsave
+    300 { 0 0 drawcircle
+        0.95 0.95 scale } repeat
+grestore
+
+-200 0 translate
+
+gsave
+    300 { 0 0 drawcircle
+        0.95 0.95 scale } repeat
+grestore
