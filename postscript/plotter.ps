@@ -1,0 +1,181 @@
+% Postscript function plotter
+% -
+% Draws function graphs.
+% Usage:
+%   <function> drawgraph
+%   where <function> is an array (a procedure)
+%   with signature x => y.
+% Sample:
+%   see below
+%
+% Author:       Julius Adorf
+% Created:      September 2009
+%           www.athoughtabroad.com
+
+% define range
+/XMax 16 def
+/XMin -8 def
+/YMax 12 def
+/YMin -6 def
+
+% define arrow size
+/ArrowSize 0.25 def
+
+% define tick sizes (height)
+%    and tick steps (gap size)
+/MajorTickSize 0.25 def
+/MajorTickStep 5 def
+/MinorTickSize 0.10 def
+/MinorTickStep 1 def
+
+% define plotter step size, increase this
+% values if graph "disassembles"
+/PlotStepSize 0.01 def
+
+% xmin xmax => -
+/drawxaxis {
+    2 copy
+    exch 0 moveto
+    0 lineto
+    xarrow
+    2 copy
+    MajorTickStep MajorTickSize xticks
+    MinorTickStep MinorTickSize xticks
+    stroke
+} def
+
+% - => -
+% requires current point set
+% does not call stroke
+/xarrow {
+    ArrowSize neg ArrowSize rmoveto 
+    ArrowSize dup neg rlineto
+    ArrowSize neg ArrowSize neg rmoveto
+    ArrowSize dup rlineto
+} def
+
+% xmin xmax step size => -
+/xticks {
+    % needed very often
+    /_ticksize exch def
+    /_tickstep exch def
+    % draw positive part
+    _tickstep 0 moveto
+    % needs xmax
+    _tickstep div floor 1 sub cvi {
+        % draw tick
+        0 _ticksize neg rmoveto
+        0 _ticksize 2 mul rlineto
+        _tickstep _ticksize neg rmoveto 
+    } repeat
+    % draw negative part
+    _tickstep neg 0 moveto
+    % needs xmin
+    abs _tickstep div floor 1 sub cvi {
+         % draw tick
+         0 _ticksize neg rmoveto
+         0 _ticksize 2 mul rlineto
+         _tickstep neg _ticksize neg rmoveto
+    } repeat
+} def
+
+% ymin ymax => -
+% delegates to drawxaxis
+/drawyaxis {
+    gsave
+    0 0 moveto
+    90 rotate 
+    drawxaxis
+    grestore
+} def
+
+% ary => -
+/drawgraph {
+    dup         % ary ary
+    XMin exch   % ary XMin ary
+    exec        % ary y
+    XMin exch   % ary XMin y
+    moveto      % ary
+    XMin        % ary XMin
+    XMax XMin sub PlotStepSize div cvi 
+    { 
+        dup dup     % ary x x x
+        4 3 roll    % x x x ary
+        dup         % x x x ary ary
+        5 1 roll    % ary x x x ary
+        exec        % ary x x y 
+        % check whether y value is within range
+        dup YMax gt % ary x x y b
+        exch        % ary x x b y
+        dup YMin lt % ary x x b y b
+        3 2 roll    % ary x x y b b
+        or          % ary x x y b
+        { moveto }
+        { lineto }
+        ifelse
+        PlotStepSize add % ary x+1
+    } repeat
+    stroke
+    pop pop
+} def
+
+% main
+
+200 300 translate
+20 20 scale
+0.03 setlinewidth
+
+% drawxaxis
+XMin XMax drawxaxis
+YMin YMax drawyaxis
+
+/drawsamples {
+    % .5x + 1
+    0.2 0.2 0.9 setrgbcolor
+    { 0.5 mul 1 add } drawgraph 
+
+    % identity
+    0.9 0.2 0.2 setrgbcolor
+    { } drawgraph
+
+    % ceiling
+    0.2 0.9 0.2 setrgbcolor
+    { ceiling } drawgraph
+
+    % sin(90x)  -- x is angle in degree
+    0.7 0.5 0.3 setrgbcolor
+    { 90 mul sin } drawgraph
+
+    % 2*cos(300x)*x/3
+    0.7 0.8 0.8 setrgbcolor
+    { dup 300 mul cos 2 mul mul 3 div } drawgraph
+
+    % | |x| - 5 | 
+    0.7 0.4 0.8 setrgbcolor
+    { abs 5 sub abs 1 sub } drawgraph
+} def
+
+/drawsamples2 {
+    % | |x| - 5 | 
+    0.1 0.4 0.8 setrgbcolor
+    { abs 5 sub abs 1 sub } drawgraph
+    
+    0.7 0.3 0.2 setrgbcolor
+    { 
+        dup % x x
+        5 mul % x 5x
+        1 add % x (5x+1)
+        1 index % x (5x+1) x
+        1 sub % x (5x+1) (x-1)
+        div   % x ((5x+1)/(x-1))
+        1 index % x ((5x+1)/(x-1)) x
+        2 mul % x ((5x+1)/(x-1)) 2x
+        sub  % x ((5x+1)/(x-1))-2x
+        2 sub  % x ((5x+1)/(x-1))-2x-2
+        exch pop
+    } drawgraph
+} def
+
+drawsamples
+drawsamples2
+
