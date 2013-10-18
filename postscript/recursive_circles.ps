@@ -1,0 +1,106 @@
+%!PS-Adobe-2.0
+%%BoundingBox: 45 245 555 755
+% Recursive circles
+%
+% Author:       Julius Adorf
+% Created:      December 2009
+
+% ----- PARAMETERS -----
+
+% The number of small circles in
+% the bigger circle.
+/N 5 def
+
+% Maximum recursion depth.
+% Increase depth (e.g. 7) in order to see how the pattern is
+% constructed in a depth-first  manner.
+/D 4 def
+
+% Toggle center circle on/off
+/C false def
+
+% Toggle border circles on/off
+/B true def
+
+% ----- PROCEDURES -----
+
+% The radius of the small circle. Computation is
+% based on the number of small circles and
+% the radius of the larger unit circle.
+/r
+    % based on a triangle construction
+    % sin(180/N) / (1 + sin(180/N)
+    180 N div sin dup 1 add div
+def
+
+% Computes the angle of the n-th root of the
+% circle in the complex plane.
+%   k => r
+/nroot {
+    360 mul N div
+} bind def
+
+% Draws a unit circle. This procedure is aware
+% of the recursion depth and slightly dims color
+% and increases the proportion of linewidth and radius.
+%   d => -
+/drawunitcircle {
+    dup
+    % Heuristic that computes a linewidth that
+    % becomes thicker towards the terminal
+    % recursion. Circle size roughly halves in each
+    % level thus the quadratic part.
+    % (0.1 / (h*h+1))
+    0.1 exch dup mul 1 add div setlinewidth
+    % Heuristic that computes a gray value.
+    % Circles near the terminal recursion are
+    % drawn brighter than outer circles.
+    sqrt sqrt 1 add 1 exch div 1.75 div setgray
+    % Draw the unit circle
+    0 0 1 0 360 arc
+    closepath
+    stroke
+} bind def
+
+% Draws a recursive pattern of circles with
+% a given depth in a depth-first manner.
+%   d => -
+/circlepattern {
+    dup drawunitcircle
+
+    % Check whether this is the terminal
+    % recursion. If not call circlepattern
+    % recursively.
+    dup 0 gt {
+        % Decrement recursion level
+        1 sub
+
+        % Draw circle pattern in the center
+        C {
+          gsave
+            1 r 2 mul sub dup scale
+            dup circlepattern
+          grestore
+        } if
+
+        % Draw N smaller circles
+        1 1 N {
+          gsave
+            nroot rotate
+            1 r sub 0 translate
+            r dup scale
+            dup circlepattern
+          grestore
+        } for
+    } if
+    % Cleanup the stack by removing the value
+    % of the current recursion level.
+    pop
+} bind def
+
+
+% ----- MAIN PROCEDURE -----
+300 500 translate
+250 250 scale
+0.35 setgray
+D circlepattern
