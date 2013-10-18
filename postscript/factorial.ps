@@ -1,0 +1,7 @@
+% n ==> n!
+/fact { 1 exch -1 1 { mul } for } def
+
+% demo
+0 fact (XXX) cvs print (\n) print % special case
+5 fact (XXX) cvs print (\n) print % expect 120
+
