@@ -1,0 +1,15 @@
+realtime srand
+{
+  rand 255 mod 255 div
+  rand 255 mod 255 div
+  rand 255 mod 255 div
+  setrgbcolor
+  rand 600 mod
+  rand 841 mod
+  rand 60 mod
+  0 360 arc fill
+  % busy-waiting for some time
+  20000 { 100
+    30 { sqrt } repeat
+    pop } repeat
+} loop
