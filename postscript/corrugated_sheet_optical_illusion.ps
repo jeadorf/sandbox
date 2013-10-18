@@ -1,0 +1,42 @@
+0 550 translate
+gsave
+
+0.5 0.5 scale
+
+/drawwave {
+    0   0 100   0  90 arc
+    stroke
+    200 0 100 180 270 arc
+    stroke
+    200 0 100 270 360 arc
+    stroke
+    400 0 100  90 180 arc
+    stroke
+} def
+
+/drawdoublewave {
+    gsave
+    drawwave
+    400 0 translate
+    drawwave
+    400 0 translate
+    drawwave
+    grestore
+} def
+
+gsave
+35 { drawdoublewave
+     1 0.99 scale
+     0 -15 translate} repeat
+grestore
+
+grestore
+
+% 100 -100 translate
+% /Helvetica-Oblique findfont
+% 25 scalefont
+% setfont
+% 0.7 setgray
+% 0 200 moveto
+% (switching perspective?) show
+
