@@ -1,0 +1,33 @@
+% one two => two one+two
+/fibmove {
+    dup % one two two
+    3 1 roll % two one two
+    add % two one+two
+} def
+
+% n => fib(n)
+/fib {
+    0 1 % n 0 1
+    3 2 roll % 0 1 n
+    { fibmove }
+    repeat
+    pop
+} def
+
+% n => -
+/print_fib {
+    (fib\() print
+    dup 20 string cvs print
+    (\) = ) print
+    fib
+    20 string cvs print
+    (\n) print
+} def
+
+% demo
+1 print_fib
+2 print_fib
+3 print_fib
+5 print_fib
+10 print_fib
+41 print_fib
