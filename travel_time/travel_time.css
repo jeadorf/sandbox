@@ -1,0 +1,22 @@
+body {
+    width: 400px;
+    height: 300px;
+    margin: 30px auto;
+}
+
+h1 {
+    font-size: large;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td:first-child {
+    color: rgb(80, 80, 80);
+    text-align: right;
+}
+
+td {
+    padding: 10px 5px;
+}

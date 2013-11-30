@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Travel Time Calculator (beta)</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src='travel_time.js'></script>
+    <script src='travel_time.controller.js'></script>
+    <link rel='stylesheet' href='travel_time.css' />
+  </head>
+  <body>
+    <h1>Travel Time Calculator (beta)</h1>
+    <table>
+      <!-- inputs -->
+      <tr>
+        <td>Acceleration</td>
+        <td><input id='acc' type='number' min='0' step='100' value='9000' /></td>
+        <td>km/h/h</td>
+      </tr>
+      <tr>
+        <td>Deceleration</td>
+        <td><input id='dec' type='number' min='0' step='100' value='9000' /></td>
+        <td>km/h/h</td>
+      </tr>
+      <tr>
+        <td>Top speed</td>
+        <td><input id='v_top' type='number' min='0' step='10' value='430' /></td>
+        <td>km/h</td>
+      </tr>
+      <tr>
+        <td>Track length</td>
+        <td><input id='x' type='number' min='0' step='1' value='30' /></td>
+        <td>km</td>
+      </tr>
+      <!-- outputs -->
+      <tr>
+        <td>Maximum speed</td>
+        <td><span id='v_max'></span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Accelerating</td>
+        <td><span id='t_acc'></span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>At top speed</td>
+        <td><span id='t_top'></span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Decelerating</td>
+        <td><span id='t_dec'></span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Travel time</td>
+        <td><span id='T'></span></td>
+        <td></td>
+      </tr>
+    </table>
+  </body>
+</html>
